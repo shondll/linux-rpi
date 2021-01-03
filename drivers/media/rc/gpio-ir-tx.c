@@ -131,9 +131,9 @@ static int gpio_ir_tx(struct rc_dev *dev, unsigned int *txbuf,
 	unsigned long flags;
 
 	local_irq_save(flags);
-	if (gpio_ir->carrier)
-		gpio_ir_tx_modulated(gpio_ir, txbuf, count);
-	else
+	// if (gpio_ir->carrier)
+	// 	gpio_ir_tx_modulated(gpio_ir, txbuf, count);
+	// else
 		gpio_ir_tx_unmodulated(gpio_ir, txbuf, count);
 	local_irq_restore(flags);
 
