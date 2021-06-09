@@ -649,6 +649,9 @@ static void bcm2835_i2s_stop(struct bcm2835_i2s_dev *dev,
 	else
 		mask = BCM2835_I2S_TXON;
 
+	/* FIXME: Hack to not stop the clock */
+	return;
+
 	regmap_update_bits(dev->i2s_regmap,
 			BCM2835_I2S_CS_A_REG, mask, 0);
 
@@ -695,11 +698,22 @@ static int bcm2835_i2s_startup(struct snd_pcm_substream *substream,
 {
 	struct bcm2835_i2s_dev *dev = snd_soc_dai_get_drvdata(dai);
 
+	uint32_t mask;
+
 	if (snd_soc_dai_active(dai))
 		return 0;
 
 	/* Should this still be running stop it */
 	bcm2835_i2s_stop_clock(dev);
+
+	/* FIXME: Hack added to not stop the clock */
+	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
+		mask = BCM2835_I2S_RXON;
+	else
+		mask = BCM2835_I2S_TXON;
+	regmap_update_bits(dev->i2s_regmap,
+			BCM2835_I2S_CS_A_REG, mask, 0);
+
 
 	/* Enable PCM block */
 	regmap_update_bits(dev->i2s_regmap, BCM2835_I2S_CS_A_REG,
@@ -719,6 +733,9 @@ static void bcm2835_i2s_shutdown(struct snd_pcm_substream *substream,
 		struct snd_soc_dai *dai)
 {
 	struct bcm2835_i2s_dev *dev = snd_soc_dai_get_drvdata(dai);
+
+	/* FIXME: Hack added to not stop the clock */
+	return;
 
 	bcm2835_i2s_stop(dev, substream, dai);
 

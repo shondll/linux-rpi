@@ -222,7 +222,7 @@ static struct snd_soc_dai_link snd_rpi_dac_dai[] = {
 	.name		= "RPi-DAC",
 	.stream_name	= "RPi-DAC HiFi",
 	.dai_fmt	= SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
-				SND_SOC_DAIFMT_CBS_CFS,
+				SND_SOC_DAIFMT_CBS_CFS | SND_SOC_DAIFMT_CONT,
 	SND_SOC_DAILINK_REG(rpi_dac),
 },
 };
